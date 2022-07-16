@@ -1,6 +1,14 @@
 # - *- coding: utf- 8 - *-
 from keyboards.default.main_settings import get_settings_func
 from typing import Text
+import ftplib
+from aiogram.types import ReplyKeyboardMarkup
+from threading import Timer
+from threading import *
+import shutil
+import re
+from threading import Timer
+from threading import *
 from aiogram import types
 from my_fake_useragent import UserAgent
 import general as gen
@@ -35,11 +43,18 @@ import config
 from data.config import bot_description
 import time
 import os
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, inline_keyboard
 import json
-from keyboards.default.menu import reg_back, virtualsim, virtualsimadm
+from keyboards.default.menu import reg_back, virtualsim, virtualsimadm, sit, pon, dano, pravila, otm
 import pyshorteners
 from data.config import sms_api
-
+from threading import Timer
+from threading import *
+import os
+from aiogram.types import CallbackQuery, Message
+import re 
+import time
+import ftplib
 import secrets
 import configparser
 import re
@@ -52,14 +67,96 @@ from handlers.users.cicada_menu import cicada
 from keyboards.inline.cicada import gen_pass, uss
 from keyboards.inline.user_profiles import get_user_profile
 from keyboards.inline.user_inline import open_profile_inl
+import ftplib
+import re
+import requests
+from threading import Timer
+from threading import *
+from datetime import datetime, date
+import requests, os
+from io import BytesIO
+import aiohttp
+from aiogram.types import ReplyKeyboardRemove, \
+    ReplyKeyboardMarkup, KeyboardButton, \
+    InlineKeyboardMarkup, InlineKeyboardButton
+
+
+class PhotoStorage:
+    def __init__(self, path: str):
+        self.path = path
+        self.data = self.load()
+    
+    def load(self):
+        if exists(self.path):
+            with open(self.path) as file:
+                return file.readlines()
+
+
+async def upload_document(
+    bot, doc: types.photo_size.PhotoSize or types.Document
+) -> str:
+    with await doc.download(BytesIO()) as file:
+
+        form = aiohttp.FormData()
+        form.add_field(
+            name="file",
+            value=file,
+        )
+
+        async with bot.session.post("https://telegra.ph/upload", data=form) as response:
+            img_src = await response.json()
+
+    return "http://telegra.ph/" + img_src[0]["src"]
+
+
 wrapper = Sms('d4c14d3e44e06932975eB8d839B56152')
+user_starii = []
+user_new = []
+old_baza = []
+new_baza = []
+sait = []
+dopusk = []
+
+temp = []
 
 def balans():
     bal = GetBalance().request(wrapper)
     return bal
 
+
+mesmes = []
+
 class cicada(StatesGroup):
     size = State()
+    vg = State()
+    vg2 = State()
+    pz = State()
+    pz2 = State()
+    pzl = State()
+    pzl2 = State()
+    kdrtop = State()
+    kdrtop2 = State()
+    kdrtopl = State()
+    kdrtopl2 = State()
+    amzntop = State()
+    amzntop2 = State()
+    arizonel = State()
+    arizonel2 = State()
+    arizone = State()
+    arizone2 = State()
+    chizhtop = State()
+    chizhtop2 = State()
+    abawork = State()
+    abawork2 = State()
+    murmur48 = State()
+    lokwork = State()
+    lokwork2 = State()
+    amzntopl2 = State()
+    amzntopl = State()
+    lokshop = State()
+    lokshop2 = State()
+    chizhtopl = State()
+    chizhtopl2 = State()
     up_y = State()
     up_x = State()
     red = State()
@@ -68,6 +165,13 @@ class cicada(StatesGroup):
     cicada_url = State()
     ip_up = State()
     probiv = State()
+    site = State()
+    site_new = State()
+    old_user = State()
+    new_user = State()
+    par = State()
+    dat = State()
+    gad = State()
 
 
 
@@ -89,6 +193,2109 @@ async def show_search(message: types.Message, state: FSMContext):
         await message.answer("<b>🔐 Выберите нужный вам Акаунт:</b>", reply_markup=get_kb)
     else:
         await message.answer("<b>🔐 Акаунты в данное время отсутствуют.</b>")
+
+
+
+@dp.message_handler(text='🌐 Сайты', state="*")
+async def siteee(message: types.Message, state: FSMContext):
+    await state.finish()
+    await message.delete()
+    chat_id = message.chat.id
+    print(dopusk)
+    if chat_id in dopusk:
+        fo = open("img.png", "rb").read()
+        messm = "<b>✳️✳️  Управление  -  Сайтами  ✳️✳️</b>"
+        await bot.send_photo(chat_id, photo=fo, caption=messm, reply_markup=sit)
+    else:
+        await message.answer(f"<b>Сюда Ограничен Доступ</b>\n", parse_mode="html")
+        await message.answer(f"<b>Для Входа Введи Пароль:</b>", parse_mode="html")
+        await cicada.par.set()
+
+ggg = []
+@dp.message_handler(state=cicada.par)
+async def par(message: types.Message, state: FSMContext):
+    chat_id = message.chat.id
+    xxx = message.text
+    await message.delete()
+    await state.finish()
+  
+    if xxx == "web":
+        if chat_id not in dopusk:
+            dopusk.append(chat_id)
+        fo = open("img.png", "rb").read()
+        messm = "<b>✳️✳️  Управление  -  Сайтами  ✳️✳️</b>"
+        await bot.send_photo(chat_id, photo=fo, caption=messm, reply_markup=sit)
+    else:
+        await bot.send_message(chat_id, "<b>❌ НЕВЕРНЫЙ ПАРОЛЬ ❌</b>") 
+        
+
+@dp.callback_query_handler(text='kdrtop', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'murmur48.cc'
+    ftp_user = 'cicada@kdrtop.ru'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"krdtop.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"krdtop.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+    await cicada.kdrtop.set()
+
+tem = []
+@dp.callback_query_handler(state=cicada.kdrtop)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+        await cicada.kdrtop2.set()
+
+
+@dp.message_handler(state=cicada.kdrtop2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+
+    kto = message.chat.username
+    admin = 1144785510
+    await message.delete()
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"krdtop.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("krdtop.html", "r", encoding="utf-8").readlines()
+        open("new-krdtop.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-krdtop.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-krdtop.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+
+
+@dp.callback_query_handler(text='amzntop', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'amzntop.ru'
+    ftp_user = 'amazon@amzntop.ru'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"amzntop.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"amzntop.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+    await cicada.amzntop.set()
+
+tem = []
+@dp.callback_query_handler(state=cicada.amzntop)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.amzntop2.set()
+
+@dp.message_handler(state=cicada.amzntop2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+
+    kto = message.chat.username
+    admin = 1144785510
+    await message.delete()
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"amzntop.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("amzntop.html", "r", encoding="utf-8").readlines()
+        open("new-amzntop.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-amzntop.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-amzntop.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+
+
+
+
+@dp.callback_query_handler(text='amzntopl', state="*")
+async def best(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'amzntopl.ru'
+    ftp_user = 'amzl@amzntopl.ru'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    ncncc = ftp.nlst()
+    print(ncncc)
+    input()
+    local_file = f"amzntopl.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"amzntopl.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    m
+    asasa = []
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                  
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    print(name)
+                    h = g.split('" rel="')[0]
+                    print(h)
+                    
+                    if len(h) <= 30:
+                        if h in asasa:
+                            pass
+                        else:
+                            asasa.append(h)
+                            satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                  
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+    await cicada.amzntopl.set()
+
+
+tem = []
+@dp.callback_query_handler(state=cicada.amzntopl)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.amzntopl2.set()
+
+@dp.message_handler(state=cicada.amzntopl2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+
+    kto = message.chat.username
+    admin = 1144785510
+    await message.delete()
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"amzntopl.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("amzntopl.html", "r", encoding="utf-8").readlines()
+        open("new-amzntopl.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-amzntopl.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-amzntopl.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+
+@dp.callback_query_handler(text='lokshop', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'ruvip54.hostiman.ru'
+    ftp_user = 'shop'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"lokshop.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"lokshop.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_message(call.message.chat.id, mj, reply_markup=satana)
+    await cicada.lokshop.set()
+
+
+tem = []
+@dp.callback_query_handler(state=cicada.lokshop)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.lokshop2.set()
+
+@dp.message_handler(state=cicada.lokshop2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+
+    kto = message.chat.username
+    admin = 1144785510
+    await message.delete()
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"lokshop.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("lokshop.html", "r", encoding="utf-8").readlines()
+        open("new-lokshop.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-lokshop.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-lokshop.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+@dp.callback_query_handler(text='lokwork', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'lok-work.cc'
+    ftp_user = 'lok-work.cc@lok-work.cc'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"lokwork.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"lokwork.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+    await cicada.lokwork.set()
+
+
+tem = []
+@dp.callback_query_handler(state=cicada.lokwork)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.lokwork2.set()
+
+@dp.message_handler(state=cicada.lokwork2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+
+    kto = message.chat.username
+    admin = 1144785510
+    await message.delete()
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"lokwork.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("lokwork.html", "r", encoding="utf-8").readlines()
+        open("new-lokwork.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-lokwork.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-lokwork.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+
+@dp.callback_query_handler(text='murmur48', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'murmur48.cc'
+    ftp_user = 'murmur48@murmur48.cc'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"{call.message.chat.id}.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"{call.message.chat.id}.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+
+    for x in gg:
+
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await call.message.answer(mj, reply_markup=satana)
+    await cicada.murmur48.set()
+
+
+@dp.callback_query_handler(text='abawork', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'murmur48.cc'
+    ftp_user = 'aba@abawork.cc'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"abawork.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"abawork.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+    await cicada.abawork.set()
+
+tem = []
+@dp.callback_query_handler(state=cicada.abawork)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.abawork2.set()
+
+@dp.message_handler(state=cicada.abawork2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+
+    kto = message.chat.username
+    admin = 1144785510
+    await message.delete()
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"abawork.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("abawork.html", "r", encoding="utf-8").readlines()
+        open("new-abawork.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-abawork.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-abawork.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+
+
+
+
+@dp.callback_query_handler(text='chizhtopl', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'chizhtopl.ru'
+    ftp_user = 'cacady@chizhtopl.ru'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"chizhtopl.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"chizhtopl.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+    await cicada.chizhtopl.set()
+
+
+
+
+
+tem = []
+@dp.callback_query_handler(state=cicada.chizhtopl)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.chizhtopl2.set()
+
+@dp.message_handler(state=cicada.chizhtopl2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+
+    kto = message.chat.username
+    admin = 1144785510
+    await message.delete()
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"chizhtopl.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("chizhtopl.html", "r", encoding="utf-8").readlines()
+        open("new-chizhtopl.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-chizhtopl.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-chizhtopl.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+@dp.callback_query_handler(text='chizhtop', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'omwork.cc'
+    ftp_user = 'cicada@chizhtop.ru'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"chizhtop.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"chizhtop.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+    await cicada.chizhtop.set()
+
+
+tem = []
+@dp.callback_query_handler(state=cicada.chizhtop)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.chizhtop2.set()
+
+@dp.message_handler(state=cicada.chizhtop2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+    print(x)
+    kto = message.chat.username
+    admin = 1144785510
+
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"chizhtop.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("chizhtop.html", "r", encoding="utf-8").readlines()
+        open(f"new-chizhtop.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-chizhtop.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-chizhtop.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+
+@dp.callback_query_handler(text='arizone', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'arizone.ru'
+    ftp_user = 'cicada@arizone.ru'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"arizone.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"arizone.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+    await cicada.arizone.set()
+
+tem = []
+@dp.callback_query_handler(state=cicada.arizone)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.arizone2.set()
+
+@dp.message_handler(state=cicada.arizone2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+    print(x)
+    kto = message.chat.username
+    admin = 1144785510
+
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"arizone.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("arizone.html", "r", encoding="utf-8").readlines()
+        open(f"new-arizone.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-arizone.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-arizone.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+
+
+@dp.callback_query_handler(text='arizonel', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'arizonel.ru'
+    ftp_user = '777@arizonel.ru'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"arizonel.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"arizonel.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+    await cicada.arizonel.set()
+
+
+tem = []
+@dp.callback_query_handler(state=cicada.arizonel)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.arizonel2.set()
+
+@dp.message_handler(state=cicada.arizonel2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+    print(x)
+    kto = message.chat.username
+    admin = 1144785510
+
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"arizonel.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("arizonel.html", "r", encoding="utf-8").readlines()
+        open(f"new-arizonel.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-arizonel.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-arizonel.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+@dp.callback_query_handler(text='kdrtopl', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'kdrtopl.ru'
+    ftp_user = 'zzz@kdrtopl.ru'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"kdrtopl.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"kdrtopl.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+    await cicada.kdrtopl.set()
+
+
+
+tem = []
+@dp.callback_query_handler(state=cicada.kdrtopl)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.kdrtopl2.set()
+
+@dp.message_handler(state=cicada.kdrtopl2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+    print(x)
+    kto = message.chat.username
+    admin = 1144785510
+
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"kdrtopl.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("kdrtopl.html", "r", encoding="utf-8").readlines()
+        open(f"new-kdrtopl.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-kdrtopl.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-kdrtopl.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+@dp.callback_query_handler(text='pz', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'omwork.cc'
+    ftp_user = 'pzh@pzhtop.ru'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"pz.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"pz.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+    await cicada.pz.set()
+
+
+
+tem = []
+@dp.callback_query_handler(state=cicada.pz)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.pz2.set()
+
+@dp.message_handler(state=cicada.pz2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+    print(x)
+    kto = message.chat.username
+    admin = 1144785510
+
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"pz.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("pz.html", "r", encoding="utf-8").readlines()
+        open(f"new-pz.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-pz.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-pz.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+
+@dp.callback_query_handler(text='vg', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'vegaswork.cc'
+    ftp_user = 'cicada@vegaswork.cc'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"vg.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"vg.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=1)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+    mj = " \n".join(baza)
+    await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+    await cicada.vg.set()
+ 
+tem = []
+@dp.callback_query_handler(state=cicada.vg)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.vg2.set()
+
+@dp.message_handler(state=cicada.vg2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+    print(x)
+    kto = message.chat.username
+    admin = 1144785510
+
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"vg.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("vg.html", "r", encoding="utf-8").readlines()
+        open(f"new-vg.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-vg.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-vg.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+
+@dp.callback_query_handler(text='pzl', state="*")
+async def ban_add(call: types.CallbackQuery, state: FSMContext):
+    await call.message.delete()
+    await call.message.answer("<b>Идет Загрузка Сайта Ожидай .....</b>")
+    host = 'omwork.cc'
+    ftp_user = 'zzz@pzhtopl.ru'
+    ftp_password = 'Tramadol1989'
+    sait.append(host)
+    sait.append(ftp_user)
+    sait.append(ftp_password)
+    await state.finish()
+    ftp = ftplib.FTP(host, ftp_user, ftp_password)
+    local_file = f"pzl.html"
+    ftp_file  = "index.html"
+    with open(local_file, 'wb') as local_file: 
+        ftp.retrbinary('retr ' + ftp_file, local_file.write)
+    ftp.close()
+    baza = []
+    saiit = ftp_user.split("@")[-1]
+    titl = f"✳️ <b>Управление Сайтом http://{saiit}</b>"
+    baza.append(titl)
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+    gg = open(f"pzl.html", "r", encoding="utf-8").readlines()
+    satana = InlineKeyboardMarkup(row_width=3)
+    fotoo = []
+    for x in gg:
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if 'http://telegra.ph//file/' in x:
+            if x.split("url(")[-1] in x:
+                if x.split(');"></div>\n')[0] in x:
+                    x = x.split("url(")[-1]
+                    x = x.split(');"></div>\n')[0]
+                    fotoo.append(x)
+        if '<div class=' in x:
+            if 'href=' in x:
+                if 'target="_blank"' in x:
+                    nam = x.split('target="_blank">')[-1]
+                    name = nam.split('</a></div>')[0]
+                    g = x.split('href="')[-1]
+                    h = g.split('" rel="')[0]
+                    if len(h) <= 30:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}|{h}"))
+                        sfsf = f"👤 <b>{name}:</b>   <code>{h}</code>   💥"
+                        baza.append(sfsf)
+                        baza.append("➖➖➖➖➖➖➖➖➖➖➖➖➖")
+                    else:
+                        satana.add(InlineKeyboardButton(text=f"Изменить {name}", callback_data=f"{name}"))
+    satana.add(InlineKeyboardButton(text='◀️ Назад', callback_data='tttt'))
+
+    mj = " \n".join(baza)
+    fff = await bot.send_photo(chat_id=call.message.chat.id, photo=fotoo[0], caption=mj, reply_markup=satana)
+
+
+    mesmes.append(fff)
+    await cicada.pzl.set()
+
+ 
+tem = []
+@dp.callback_query_handler(state=cicada.pzl)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.pzl2.set()
+
+@dp.message_handler(state=cicada.pzl2)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+    print(x)
+    kto = message.chat.username
+    admin = 1144785510
+
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"pzl.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        
+        gg = open("pzl.html", "r", encoding="utf-8").readlines()
+        open(f"new-pzl.html", "w")
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-pzl.html", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-pzl.html", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
+
+
+
+# @dp.message_handler(state=cicada.old_user)
+# async def old(m: types.Message, state: FSMContext):
+#     x = m.text
+#     x = x.split("https://t.me/")[-1]
+#     sts = open("index.html", "r", encoding="utf-8").read()
+#     md = re.search(pattern=x, string=sts)
+#     await bot.delete_message(chat_id=m.from_user.id, message_id=m.message_id)
+#     while True:
+#         if md  is None:
+#             await m.answer("<b>‼️‼️‼️ Такого Username Нет На Сайте ‼️‼️‼️\n\n🔄 Попробуй Снова:  </b>", parse_mode="html", reply_markup=all_back_to_main_default)
+#             break
+#         if "@" in x:
+#             x = x.split("@")[-1]
+#             old_baza.append(x)
+#             await m.answer(
+#                 f"<b>Теперь Введи Username</b>\n"
+#                 f"<b>Который Нужно Установить</b>")
+#             await cicada.new_user.set()
+#             break
+#         if "http://t.me/" in x:
+#             x = x.split("http://t.me/")[-1]
+#             old_baza.append(x)
+#             await m.answer(
+#                 f"<b>Теперь Введи Username</b>\n"
+#                 f"<b>Который Нужно Установить</b>")
+#             await cicada.new_user.set()
+#             break
+#         if "https://t.me/" in x:
+#             x = x.split("https://t.me/")[-1]
+#             old_baza.append(x)
+#             await m.answer(
+#                 f"<b>Теперь Введи Username</b>\n"
+#                 f"<b>Который Нужно Установить</b>")
+#             await cicada.new_user.set()
+#             break
+#         else:
+#             old_baza.append(x)
+#             await m.answer(
+#                 f"<b>Теперь Введи Username</b>\n"
+#                 f"<b>Который Нужно Установить</b>")
+#             await cicada.new_user.set()
+#             break
+
+
+# @dp.message_handler(state=cicada.new_user)
+# async def old(m: types.Message, state: FSMContext):
+#     y = m.text
+  
+#     if "@" in y:
+#         y = y.split("@")[-1]
+#         new_baza.append(y)
+#     if "http://t.me/" in y:
+#         y = y.split("http://t.me/")[-1]
+#         new_baza.append(y)
+#     if "https://t.me/" in y:
+#         y = y.split("https://t.me/")[-1]
+#         new_baza.append(y)
+#     else:
+#         new_baza.append(y)
+#     # try:
+#     for x in new_baza:
+#         y = x
+#     for c in old_baza:
+#         pattern = c
+#     host = sait[0]
+#     ftp_user = sait[1]
+#     ftp_password = sait[2]
+#     ftp = ftplib.FTP(host, ftp_user, ftp_password)
+#     sait.clear()
+#     try:
+#         string = open("index.html", "r", encoding="utf-8").read()
+
+#         dd = re.sub(pattern, y, string)
+#         with open("index.html", "w", encoding="utf-8") as f:
+#             f.write(str(dd))
+#         await state.finish()
+
+#         await m.answer(f"<b>Мы Меняем</b>  <i>{old_baza[0]}</i><b>  На </b><i>{new_baza[0]}</i>\n"
+#                     f"<b>Идет Процесс Изменения Ожидай.....</b>")
+#         old_baza.clear()
+#         new_baza.clear()
+#         time.sleep(2)
+#         file = "index.html"
+#         file_to_upload = open('index.html', 'rb')
+#         ftp.storbinary('STOR ' + file, file_to_upload)
+#         ftp.close()
+#         await m.answer("<b>Контакт Успешно Изменен  !!!</b>", reply_markup=all_back_to_main_default)
+
+#     except:
+#         await m.answer("<b>Неверно Указан Username</b>", reply_markup=all_back_to_main_default)
+#         old_baza.clear()
+#         new_baza.clear()
+
+
+              
+
+tem = []
+@dp.callback_query_handler(state=cicada.gad)
+async def poc_callback_but(c:CallbackQuery, state: FSMContext):
+    ydal = c.data
+    if ydal == "tttt":
+        await c.message.delete()
+        await state.finish()
+        await c.message.answer(f"<b>❌ Отмена ❌</b>",  reply_markup=sit)
+    else:
+        await c.message.delete()
+        tem.append(ydal)
+        tr  = ReplyKeyboardMarkup(resize_keyboard=True)
+        tr.row("❌ Отмена")
+        await c.message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                                f"<b>Введи Username \nКоторый Нужно Установить</b>\n"
+                                f"➖➖➖➖➖➖➖➖➖➖➖➖➖", reply_markup=tr)
+    await cicada.dat.set()
+
+
+@dp.message_handler(state=cicada.dat)
+async def nene(message: types.Message, state: FSMContext):
+    x = message.text
+
+    kto = message.chat.username
+    admin = 1144785510
+    await message.delete()
+
+    if x == "❌ Отмена":
+
+        await state.finish()
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        await message.answer("Отменено",  reply_markup=check_user_out_func(message.from_user.id)) 
+    else:
+        x = x.split("https://t.me/")[-1]
+        x = x.split("http://t.me/")[-1]
+        y = tem[0]
+        naiti = y.split('|')[0]
+        y = y.split("https://t.me/")[-1]
+        y = y.split("http://t.me/")[-1]
+        tem.clear()
+        host = sait[0]
+        ftp_user = sait[1]
+        ftp_password = sait[2]
+        local_file = f"{message.chat.id}.html"
+        await state.finish()
+        
+        mmg = f"Пользователь {kto}\nВ {date.today()}\nПоменял Контакты:\nC {y}  На {x}\nНа Сервере {ftp_user}"
+        await bot.send_message(admin, mmg)
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Меняем 👤 </b><code>{y}</code>\n"
+                             f"<b>На </b> 👤 <code>{x}</code>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n")
+        open(f"new-{local_file}", "w")
+        gg = open(local_file, "r", encoding="utf-8").readlines()
+        for string in gg:
+            if naiti in string:
+                string = re.sub(pattern=y, repl=x, string=string)
+            with open(f"new-{local_file}", "a", encoding="utf-8") as f:
+                f.write(f"{string}\n")
+        old_baza.clear()
+        new_baza.clear()
+        sait.clear()
+        time.sleep(2)
+
+        ftp = ftplib.FTP(host, ftp_user, ftp_password)
+        file = "index.html"
+        file_to_upload = open(f"new-{local_file}", 'rb')
+        ftp.storbinary('STOR ' + file, file_to_upload)
+        ftp.close()
+        await message.answer(f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n"
+                             f"<b>Контакт Успешно Изменен  !!!</b>\n"
+                             f"➖➖➖➖➖➖➖➖➖➖➖➖➖\n", reply_markup=all_back_to_main_default)
 
 
 @dp.message_handler(text='📶 Номера')
@@ -181,6 +2388,38 @@ async def gen_pass(call: CallbackQuery, state: FSMContext):
     await bot.send_message(chat_id, text=paroli)
 
 
+
+@dp.callback_query_handler  (text="vega")
+async def vega(call: CallbackQuery):
+    await call.message.answer("<b>Cначало указуем username Который сейчас на сайте\nПосле Указываем На Какой Нужно Заменить</b>", reply_markup=pon)
+
+
+@dp.callback_query_handler  (text="ponyal_vega", state="*")
+async def ponyal_vega(call: CallbackQuery, state: FSMContext):
+    await call.message.answer("<b>Введи Username Который Будем Изменять</b>")
+    await cicada.site.set()
+
+
+
+@dp.message_handler(state=cicada.site)
+async def site(message: types.Message, state: FSMContext):
+    star = message.text
+    user_starii.append(star)
+    await message.answer("<b>А Теперь Username Который Теперь Будет На Сайте</b>")
+    await cicada.site_new.set()
+
+@dp.message_handler(state=cicada.site_new)
+async def site_new(message: types.Message, state: FSMContext):
+    star_new = message.text
+    user_new.append(star_new)
+    await message.answer(f"<b>Мы Меняем</b> <i>{user_starii[0]}</i> <b>на</b> <i>{user_new[0]}</i> <b>\n\nВсе Верно ?</b>", reply_markup=dano)
+
+
+@dp.callback_query_handler  (text="da_vega")
+async def da_vega(call: CallbackQuery):
+    sawe()
+    await call.message.answer("OK")
+
 @dp.callback_query_handler  (text="proton")
 async def send_danet(call: CallbackQuery):
 
@@ -246,28 +2485,32 @@ async def send_danet(call: CallbackQuery):
     if balans() < 40:
         await call.message.answer('Сервер перегружен попробуйте позже')
     else:
-        available_phones = GetFreeSlots(country=SmsTypes.Country.NL).request(wrapper)
-        activation = GetNumber(service=SmsService().AnyOther,country=SmsTypes.Country.NL).request(wrapper)          
-        nomer = ('Есть 3 минуты для регистрации. \nНомер на Signal: \n🇳🇱  {}'.format(str(activation.phone_number)))
-        await call.message.answer(nomer)
-        response = GetStatus(id=activation.id).request(wrapper)
-        number = (activation.phone_number)
-        set_as_sent = SetStatus(id=activation.id, status=SmsTypes.Status.SmsSent).request(wrapper)
-        timeout = 180
-        counter = 0
-        while True:
-            time.sleep(1)
-            counter += 1
-            if counter >= timeout:
-                await call.message.answer(f'Время вышло, номер {number} больше не актуален')
-                set_as_cancel = SetStatus(id=activation.id, status=SmsTypes.Status.Cancel).request(wrapper)
-                break
+        async def threading():
+            t2=Thread(target=await poexali)
+            t2.start()
+        async def poexali():
+            available_phones = GetFreeSlots(country=SmsTypes.Country.NL).request(wrapper)
+            activation = GetNumber(service=SmsService().AnyOther,country=SmsTypes.Country.NL).request(wrapper)          
+            nomer = ('Есть 3 минуты для регистрации. \nНомер на Signal: \n🇳🇱  {}'.format(str(activation.phone_number)))
+            await call.message.answer(nomer)
             response = GetStatus(id=activation.id).request(wrapper)
-            if response['code']:
-                code_sms = (response['code'])
-                await call.message.answer(f'Код для номера {number}:\n {code_sms}')
-                break
-
+            number = (activation.phone_number)
+            set_as_sent = SetStatus(id=activation.id, status=SmsTypes.Status.SmsSent).request(wrapper)
+            timeout = 180
+            counter = 0
+            while True:
+                time.sleep(1)
+                counter += 1
+                if counter >= timeout:
+                    await call.message.answer(f'Время вышло, номер {number} больше не актуален')
+                    set_as_cancel = SetStatus(id=activation.id, status=SmsTypes.Status.Cancel).request(wrapper)
+                    break
+                response = GetStatus(id=activation.id).request(wrapper)
+                if response['code']:
+                    code_sms = (response['code'])
+                    await call.message.answer(f'Код для номера {number}:\n {code_sms}')
+                    break
+        await threading()
 
 @dp.callback_query_handler(text="dada")
 async def send_danet(call: CallbackQuery):
@@ -276,27 +2519,33 @@ async def send_danet(call: CallbackQuery):
     if balans() < 40:
         await call.message.answer('Сервер перегружен попробуйте позже')
     else:
-        available_phones = GetFreeSlots(country=SmsTypes.Country.UK).request(wrapper)
-        activation = GetNumber(service=SmsService().AnyOther,country=SmsTypes.Country.UK).request(wrapper)          
-        nomer = ('Есть 3 минуты для регистрации. \nНомер на Telegram: \n🇬🇧  {}'.format(str(activation.phone_number)))
-        await call.message.answer(nomer)
-        response = GetStatus(id=activation.id).request(wrapper)
-        number = (activation.phone_number)
-        set_as_sent = SetStatus(id=activation.id, status=SmsTypes.Status.SmsSent).request(wrapper)
-        timeout = 180
-        counter = 0
-        while True:
-            time.sleep(1)
-            counter += 1
-            if counter >= timeout:
-                await call.message.answer(f'Время вышло, номер {number} больше не актуален')
-                set_as_cancel = SetStatus(id=activation.id, status=SmsTypes.Status.Cancel).request(wrapper)
-                break
+        async def threading():
+            t2=Thread(target= await poexali)
+            t2.start()
+
+        async def poexali():
+            available_phones = GetFreeSlots(country=SmsTypes.Country.UK).request(wrapper)
+            activation = GetNumber(service=SmsService().AnyOther,country=SmsTypes.Country.UK).request(wrapper)          
+            nomer = ('Есть 3 минуты для регистрации. \nНомер на Telegram: \n🇬🇧  {}'.format(str(activation.phone_number)))
+            await call.message.answer(nomer)
             response = GetStatus(id=activation.id).request(wrapper)
-            if response['code']:
-                code_sms = (response['code'])
-                await call.message.answer(f'Код для номера {number}:\n {code_sms}')
-                break
+            number = (activation.phone_number)
+            set_as_sent = SetStatus(id=activation.id, status=SmsTypes.Status.SmsSent).request(wrapper)
+            timeout = 180
+            counter = 0
+            while True:
+                time.sleep(1)
+                counter += 1
+                if counter >= timeout:
+                    await call.message.answer(f'Время вышло, номер {number} больше не актуален')
+                    set_as_cancel = SetStatus(id=activation.id, status=SmsTypes.Status.Cancel).request(wrapper)
+                    break
+                response = GetStatus(id=activation.id).request(wrapper)
+                if response['code']:
+                    code_sms = (response['code'])
+                    await call.message.answer(f'Код для номера {number}:\n {code_sms}')
+                    break
+        await threading()
 
 @dp.callback_query_handler  (text="gen_proxy", state="*")
 async def genene(call: CallbackQuery, state: FSMContext):
@@ -1743,3 +3992,8 @@ async def yes_buy_this_item(call: CallbackQuery, state: FSMContext):
         await state.finish()
         await call.message.answer("<b>❌ Акаунты который ты выбрал закончились.</b>",
                                   check_user_out_func(call.from_user.id))
+@dp.callback_query_handler(text='tttt')
+async def lica_message(call: types.CallbackQuery):
+    chat_id = call.message.chat.id
+    with open('ccc.webp', 'rb') as photo:
+        await bot.send_photo(chat_id=chat_id, photo=photo, reply_markup=check_user_out_func(call.message.from_user.id))
